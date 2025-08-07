@@ -147,6 +147,7 @@ class Game:
         self.player["hurt_cd"] = 0.0
         self.player["sell_cd"] = 0.0
         self.player["shoot_cd"] = 0.0
+        self.player["fire_rate"] = diff.get("player_fire_rate", self.player["fire_rate"])  # применяем баланс сложности
         self.player["dir"] = pygame.Vector2(1, 0)
         self.player["pos"] = pygame.Vector2(self.spawn_tx*TILE + TILE/2, self.spawn_ty*TILE + TILE/2)
 
@@ -164,4 +165,4 @@ class Game:
         if not self.exit_open and self.gold >= self.TARGET_GOLD:
             self.exit_open = True
             add_particles(self, self.player["pos"], COL_GOLD, n=24, speed=150)
-            add_float_text(self, "Выход открыт!", self.player["pos"])
+            add_float_text(self, "Выход открыт!", self.player["pos"]) 
