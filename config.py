@@ -22,9 +22,9 @@ LIGHT_SOFT = 160
 
 # Сложность
 DIFFS = {
-    "Лёгкая":   {"enemy_mult": 0.8, "enemy_speed": 0.9, "player_hp": 6, "sell_mult": 1.1, "spitter_chance": 0.15, "target_mult": 0.9},
-    "Нормальная":{"enemy_mult": 1.0, "enemy_speed": 1.0, "player_hp": 5, "sell_mult": 1.0, "spitter_chance": 0.25, "target_mult": 1.0},
-    "Сложная":  {"enemy_mult": 1.5, "enemy_speed": 1.15, "player_hp": 4, "sell_mult": 0.9, "spitter_chance": 0.35, "target_mult": 1.2},
+    "Лёгкая":   {"enemy_mult": 0.6, "enemy_speed": 0.8,  "player_hp": 7, "sell_mult": 1.25, "spitter_chance": 0.10, "target_mult": 0.75, "player_fire_rate": 0.18},
+    "Нормальная":{"enemy_mult": 1.0, "enemy_speed": 1.0,  "player_hp": 5, "sell_mult": 1.0,  "spitter_chance": 0.25, "target_mult": 1.0,  "player_fire_rate": 0.22},
+    "Сложная":  {"enemy_mult": 1.5, "enemy_speed": 1.15, "player_hp": 4, "sell_mult": 0.9,  "spitter_chance": 0.35, "target_mult": 1.2,  "player_fire_rate": 0.26},
 }
 
 # Размеры карт (пресеты)

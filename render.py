@@ -202,11 +202,46 @@ def draw_controls_help(g):
         panel.blit(img, (24, 24 + i * 28))
     g.screen.blit(panel, (W//2 - panel_w//2, H//2 - panel_h//2))
 
-def draw_death_or_win_overlay(g, title):
+# Новое: компоновка кнопок на экране смерти/победы
+
+def compute_death_win_button_rects(g):
+    W, H = g.screen.get_width(), g.screen.get_height()
+    btn_w, btn_h = 220, 48
+    gap = 20
+    total_w = btn_w * 2 + gap
+    x0 = W // 2 - total_w // 2
+    y = H // 2 + 16
+    return {
+        "restart": pygame.Rect(x0, y, btn_w, btn_h),
+        "menu": pygame.Rect(x0 + btn_w + gap, y, btn_w, btn_h),
+    }
+
+# Обновлено: оверлей смерти/победы с кнопками и исправленным цветом
+
+def draw_death_or_win_overlay(g, title, buttons=None):
     W, H = g.screen.get_width(), g.screen.get_height()
     overlay = pygame.Surface((W, H), pygame.SRCALPHA)
     overlay.fill((0,0,0,180))
     g.screen.blit(overlay, (0,0))
-    txt = g.font_big.render(title, True, (255, 220, 220) if title.startswith("Ты пал") else (160255, 180))
-    g.screen.blit(txt, (g.screen.get_width() // 2 - txt.get_width() // 2, g.screen.get_height() // 2 - 40))
+
+    is_dead = title.startswith("Ты пал")
+    title_col = (255, 220, 220) if is_dead else (160, 255, 180)
+    txt = g.font_big.render(title, True, title_col)
+    g.screen.blit(txt, (g.screen.get_width() // 2 - txt.get_width() // 2, g.screen.get_height() // 2 - 72))
+
+    if buttons is None:
+        buttons = compute_death_win_button_rects(g)
+
+    mx, my = pygame.mouse.get_pos()
+    for key, rect in buttons.items():
+        hovered = rect.collidepoint(mx, my)
+        base_color = (40, 70, 100) if key == "restart" else (60, 50, 70)
+        border_color = (120, 180, 255) if hovered else (90, 140, 200)
+        draw_round_rect(g.screen, rect, base_color, radius=10, border=3, border_color=border_color)
+        label = "ЗАНОВО (R)" if key == "restart" else "МЕНЮ (M)"
+        img = g.font_mid.render(label, True, COL_UI)
+        g.screen.blit(img, (rect.centerx - img.get_width() // 2, rect.centery - img.get_height() // 2))
+
+    hint = g.font.render("Нажми R или кликни — начать заново. Нажми M — меню.", True, COL_DIM)
+    g.screen.blit(hint, (W // 2 - hint.get_width() // 2, buttons["restart"].bottom + 12))
 

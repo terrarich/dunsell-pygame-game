@@ -9,7 +9,7 @@ from systems import (
 )
 from render import (
     draw_world, draw_lighting, draw_ui,
-    draw_death_or_win_overlay
+    draw_death_or_win_overlay, compute_death_win_button_rects
 )
 
 def main():
@@ -103,19 +103,26 @@ def main():
 
         # Состояния: смерть / победа
         if game.state in (STATE_DEAD, STATE_WIN):
+            buttons = compute_death_win_button_rects(game)
             for e in events:
                 if e.type == pygame.KEYDOWN:
                     if e.key == pygame.K_r:
                         game.new_run()
                     elif e.key == pygame.K_m:
                         game.state = STATE_MENU
+                elif e.type == pygame.MOUSEBUTTONDOWN and e.button == 1:
+                    mx, my = pygame.mouse.get_pos()
+                    if buttons["restart"].collidepoint(mx, my):
+                        game.new_run()
+                    elif buttons["menu"].collidepoint(mx, my):
+                        game.state = STATE_MENU
 
             draw_world(game)
             draw_lighting(game)
             if game.state == STATE_DEAD:
-                draw_death_or_win_overlay(game, "Ты пал…")
+                draw_death_or_win_overlay(game, "Ты пал…", buttons)
             else:
-                draw_death_or_win_overlay(game, "Ты выбрался с сокровищами!")
+                draw_death_or_win_overlay(game, "Ты выбрался с сокровищами!", buttons)
             pygame.display.flip()
             continue
 
